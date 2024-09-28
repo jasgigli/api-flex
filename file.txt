@@ -1,0 +1,26 @@
+api-flex/
+│
+├── src/
+│   ├── apiFlex.js         # Main entry point
+│   ├── core/
+│   │   ├── request.js     # Core request logic (using fetch or axios)
+│   │   ├── cache.js       # Caching logic
+│   │   ├── retry.js       # Retry logic
+│   │   ├── interceptors.js# Interceptor logic
+│   │   └── token.js       # Token management
+│   ├── config/
+│   │   └── default.js     # Default configuration
+│   └── utils/
+│       ├── logger.js      # Error logging utility
+│       ├── helpers.js     # Utility functions (headers, timeouts, etc.)
+│       └── environment.js # Node/browser detection
+│
+├── test/
+│   └── apiFlex.test.js    # Test cases
+│
+├── examples/
+│   └── server.js          # Example server
+│
+├── package.json
+├── README.md
+└── .eslintrc.js           # ESLint configuration
