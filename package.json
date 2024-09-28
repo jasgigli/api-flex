@@ -4,23 +4,21 @@
   "description": "A powerful, easy-to-use library for seamless API integration with built-in retries, caching, and error handling.",
   "main": "src/index.js", 
   "module": "src/index.js", 
-  "types": "src/index.d.ts",
+  "types": "src/index.d.ts", 
   "type": "module",
   "scripts": {
     "lint": "eslint .",
     "prepublishOnly": "npm run lint",
-    "prepare": "npm run build",
-    "build": "tsc",
+    "prepare": "npm run build", 
+    "build": "echo 'No build step required'", 
     "version": "npm version patch -m 'Upgrade to version %s'"
   },
   "dependencies": {
     "axios": "^1.5.0",
-    "node-fetch": "^3.3.2",
-    "ts-node": "^10.9.2"
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
-    "eslint": "^8.44.0",
-    "typescript": "^4.9.5"
+    "eslint": "^8.44.0"
   },
   "engines": {
     "node": ">=14.0.0"
