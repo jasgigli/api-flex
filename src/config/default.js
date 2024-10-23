@@ -1,10 +1,9 @@
-
-// src/config/deafault.js
+// src/config/default.js
 export const defaultConfig = {
   headers: {
     "Content-Type": "application/json",
   },
-  retry: 3, // Default retries
-  timeout: 5000, // Default timeout in ms
-  token: null, // Optional token
+  timeout: 5000, // Default timeout
+  retries: 3, // Default number of retries
+  retryDelay: 1000, // Default retry delay
 };

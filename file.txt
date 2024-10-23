@@ -13,17 +13,6 @@ api-flex/
 │   └── utils/
 │       └── environment.js      # Node/browser detection
 │
-├── test/
-│   ├── apiFlex.test.js         # Test cases for the main API functionality
-│   ├── core/
-│   │   ├── request.test.js      # Test cases for request handling
-│   │   ├── cache.test.js        # Test cases for caching logic
-│   │   ├── retry.test.js        # Test cases for retry logic
-│   │   ├── interceptors.test.js  # Test cases for interceptor logic
-│   │   └── token.test.js        # Test cases for token management
-│   └── utils/
-│       └── environment.test.js  # Test cases for environment detection
-│
 ├── examples/
 │   └── server.js               # Example of testing locally
 │

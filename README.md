@@ -1,19 +1,23 @@
-# Api-Flex
+# 🛠️ **api-flex** — A Flexible and Powerful API Handling Library
 
 [![npm](https://img.shields.io/npm/dm/api-flex.svg)](https://www.npmjs.com/package/api-flex)
 [![npm](https://img.shields.io/npm/v/api-flex.svg)](https://www.npmjs.com/package/api-flex)
 [![License](https://img.shields.io/github/license/jasgigli/api-flex.svg)](https://github.com/jasgigli/api-flex/blob/main/LICENSE)
 
-**`api-flex`** is a modern, powerful, and flexible library for handling API requests. It combines the simplicity of `fetch` with the power of `axios`, while introducing advanced features such as automatic retries, token management, centralized error handling, and in-memory response caching.
+**`api-flex`** combines the simplicity of `fetch` and the power of `axios`, bringing modern solutions to API request handling. With built-in retries, token management, error handling, and caching, it removes the complexities of working with HTTP requests.
 
-## 🚀 Key Features
+---
 
-- **Unified API**: Combines the best of both `fetch` and `axios`.
-- **Automatic Retries**: Configurable retry mechanism for failed requests.
-- **Token Management**: Easily manage authorization tokens.
-- **Centralized Error Handling**: Built-in error logging and handling.
-- **Response Caching**: Optional caching to improve performance for repeated requests.
-- **Lightweight**: A small footprint with a powerful feature set.
+## 🚀 **Key Features**
+
+- 🌐 **Unified API**: Combines `fetch`'s flexibility with `axios`'s power.
+- 🔁 **Automatic Retries**: Set up configurable retries for failed requests.
+- 🔐 **Token Management**: Easily manage authorization tokens for secure API calls.
+- ⚠️ **Centralized Error Handling**: Streamlined error management and logging.
+- 🧠 **Response Caching**: Optional in-memory caching to optimize repeated requests.
+- ⚡ **Lightweight**: Efficiently built for modern applications with a small footprint.
+
+---
 
 ## 📦 Installation
 
@@ -23,19 +27,19 @@ Install `api-flex` via npm:
 npm install api-flex
 ```
 
-## 🎯 Why Choose `api-flex`?
+---
 
-`api-flex` abstracts the complexity of API integrations, providing you with a robust and intuitive API to handle HTTP requests. No need to manually set up retries, caching, or token management—everything is handled out-of-the-box.
+## 🎯 **Why Use `api-flex`?**
 
-Here are several simplified syntax examples for using the `apiFlex` library to make `GET` requests. Each example demonstrates a different approach while maintaining clarity and simplicity:
+`api-flex` simplifies complex API integrations by providing an intuitive and feature-rich library. You don't have to set up retries, caching, or token handling manually—everything is configured out-of-the-box.
 
 ---
 
-# 💻 Usage
+## 💻 **Basic Usage Examples**
 
-### 💻 Simple Examples for `GET` Requests
+### 💻 `GET` Requests
 
-#### 🟢 Basic GET Request
+### 🟢 **Basic GET Request**
 
 ```javascript
 import apiFlex from "api-flex";
@@ -44,7 +48,7 @@ const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
 console.log(data);
 ```
 
-#### 🟢 Using `try-catch` with a Function
+#### 🔍 Using `try-catch` with a Function
 
 ```javascript
 import apiFlex from "api-flex";
@@ -71,17 +75,28 @@ apiFlex("https://jsonplaceholder.typicode.com/posts/1")
   .catch((error) => console.error("Error fetching user:", error));
 ```
 
-#### 🟢 Arrow Function Syntax
+### 🔒 **GET Request with Custom Headers**
 
 ```javascript
 import apiFlex from "api-flex";
 
-const fetchUser = async () => {
-  const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
-  console.log(data);
-};
+const headers = { Authorization: "Bearer my-token" };
+const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1", {
+  headers,
+});
+console.log(data);
+```
 
-fetchUser();
+### 🔁 **Automatic Retries Example**
+
+```javascript
+import apiFlex from "api-flex";
+
+const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1", {
+  retries: 3,
+  retryDelay: 1000, // Retry every 1 second
+});
+console.log(data);
 ```
 
 #### 🟢 Using an Immediately Invoked Function Expression (IIFE)
@@ -157,7 +172,7 @@ import apiFlex from "api-flex";
 
 ---
 
-# 📚 More Modern Usage Examples
+## 📚 More Modern Usage Examples
 
 ### **GET Request**
 
@@ -286,10 +301,12 @@ const fetchPostWithErrorHandling = async () => {
 fetchPostWithErrorHandling();
 ```
 
+---
+
 ### Example Usage for Caching
 
-````javascript
-import apiFlex from "../src/index.js";
+```javascript
+import apiFlex from "api-flex";
 
 const fetchUserWithCache = async () => {
   try {
@@ -301,17 +318,49 @@ const fetchUserWithCache = async () => {
       cache: true, // Enable caching
     };
 
-    const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1", options);
+    const data = await apiFlex(
+      "https://jsonplaceholder.typicode.com/posts/1",
+      options
+    );
     console.log("Cached User Data:", data);
   } catch (error) {
     console.error("Error fetching user:", error);
   }
 };
 
-fetchUserWithCache();```
+fetchUserWithCache();
+```
+
 ---
 
 # 📦 Integration with Different Frameworks and Libraries
+
+# `Node.js` <img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg" alt="Node.js" width="30"/>( `Express` <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" alt="Express" width="30"/>)
+
+You can easily integrate `api-flex` in a Node.js/Express application for server-side API calls.
+
+#### Example:
+
+```javascript
+import express from "express";
+import apiFlex from "api-flex";
+
+const app = express();
+
+app.get("/post", async (req, res) => {
+  try {
+    const post = await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
+    res.json(post);
+  } catch (error) {
+    console.error("Error fetching post:", error.message);
+    res.status(500).send("Failed to fetch post.");
+  }
+});
+
+app.listen(3000, () => {
+  console.log("Server running on http://localhost:3000");
+});
+```
 
 # `React` <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React" width="30"/>
 
@@ -357,7 +406,7 @@ const PostFetcher = () => {
 };
 
 export default PostFetcher;
-````
+```
 
 # `Vue.js` <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" alt="Vue.js" width="30"/>
 
@@ -395,87 +444,6 @@ export default {
 </script>
 ```
 
-# `Angular` <img src="https://angular.io/assets/images/logos/angular/angular.svg" alt="Angular" width="30"/>
-
-In Angular, you can create a service to encapsulate your API calls with `api-flex` and then inject that service into your components.
-
-#### Example Service:
-
-```typescript
-import { Injectable } from "@angular/core";
-import apiFlex from "api-flex";
-
-@Injectable({
-  providedIn: "root",
-})
-export class ApiService {
-  async fetchPost() {
-    try {
-      return await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-}
-```
-
-#### Example Component:
-
-```typescript
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "./api.service";
-
-@Component({
-  selector: "app-post",
-  template: `
-    <h1 *ngIf="post">{{ post.title }}</h1>
-    <p *ngIf="post">{{ post.body }}</p>
-    <p *ngIf="error">{{ error }}</p>
-  `,
-})
-export class PostComponent implements OnInit {
-  post: any;
-  error: string | null = null;
-
-  constructor(private apiService: ApiService) {}
-
-  async ngOnInit() {
-    try {
-      this.post = await this.apiService.fetchPost();
-    } catch (err) {
-      this.error = err.message;
-    }
-  }
-}
-```
-
-# `Express` <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" alt="Express" width="30"/> or `Node.js` <img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg" alt="Node.js" width="30"/>
-
-You can easily integrate `api-flex` in a Node.js/Express application for server-side API calls.
-
-#### Example:
-
-```javascript
-import express from "express";
-import apiFlex from "api-flex";
-
-const app = express();
-
-app.get("/post", async (req, res) => {
-  try {
-    const post = await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
-    res.json(post);
-  } catch (error) {
-    console.error("Error fetching post:", error.message);
-    res.status(500).send("Failed to fetch post.");
-  }
-});
-
-app.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
-});
-```
-
 # `Svelte`
 
 In a Svelte application, you can call `api-flex` directly within the script tag of your component.
@@ -507,16 +475,287 @@ In a Svelte application, you can call `api-flex` directly within the script tag 
 {/if}
 ```
 
+
 ---
 
 ## 📊 Comparison: `fetch`, `axios`, and `api-flex`
 
-| Feature                | fetch       | axios       | api-flex       |
-| ---------------------- | ----------- | ----------- | -------------- |
-| **Built-in retries**   | ❌          | ❌          | ✅             |
-| **Token management**   | ❌ (manual) | ❌ (manual) | ✅ (automatic) |
-| **Centralized errors** | ❌          | ❌          | ✅             |
-| **Response caching**   | ❌          | ❌          | ✅             |
+| Feature                  | `fetch`      | `axios`      | `api-flex`      |
+| ------------------------ | ------------ | ------------ | --------------- |
+| **Built-in retries**      | ❌           | ❌           | ✅              |
+| **Token management**      | ❌ (manual)  | ❌ (manual)  | ✅ (automatic)  |
+| **Centralized errors**    | ❌           | ❌           | ✅              |
+| **Response caching**      | ❌           | ❌           | ✅              |
+| **Timeout handling**      | ❌           | ✅           | ✅              |
+| **Batch requests**        | ❌           | ❌           | ✅              |
+| **Request/Response Interceptors** | ❌  | ✅           | ✅              |
+| **Exponential backoff**   | ❌           | ❌           | ✅              |
+| **Customizable defaults** | ❌           | ✅           | ✅              |
+| **Environment detection** | ❌           | ❌           | ✅              |
+| **Automatic rate-limiting handling** | ❌ | ❌         | ✅              |
+| **Lightweight**           | ✅           | ❌           | ✅              |
+| **Wide browser support**  | ✅           | ✅           | ✅              |
+
+---
+
+### Key Advantages of `api-flex` Over Other Libraries:
+- **Batch Requests**: Unlike `fetch` or `axios`, `api-flex` supports batching multiple API requests into a single operation, reducing network overhead.
+- **Automatic Token Management**: `api-flex` handles token refreshing and management automatically, streamlining the process of authenticated requests.
+- **Built-in Retry Mechanism**: With built-in retry logic and support for exponential backoff, `api-flex` offers more robust error handling compared to the manual approaches in `fetch` and `axios`.
+- **Rate Limiting Handling**: The rate-limiting feature in `api-flex` helps prevent API overuse, something `fetch` and `axios` don’t handle out-of-the-box.
+
+This comparison emphasizes how `api-flex` provides a more feature-rich and developer-friendly experience, especially for large-scale or complex applications.
+---
+
+
+# 🚀 Features of Api-Flex
+
+### Key Features
+
+### **Batch Requests**
+
+- **Batch Requests**:
+
+  - Implement a feature that allows developers to batch multiple requests into a single API call. This reduces the number of network requests made, improving performance and efficiency, especially for applications making multiple simultaneous API calls.
+
+  **Example:**
+
+  ```javascript
+  import apiFlex from "api-flex";
+
+  const fetchBatchRequests = async () => {
+    const urls = [
+      "https://jsonplaceholder.typicode.com/posts/1",
+      "https://jsonplaceholder.typicode.com/posts/2",
+      "https://jsonplaceholder.typicode.com/posts/3",
+    ];
+
+    // Directly use apiFlex to make batch requests
+    const responses = await apiFlex.batch(urls);
+    console.log("Fetched Batch Data:", responses);
+  };
+
+  fetchBatchRequests();
+  ```
+
+- The `batch` method allows you to pass an array of URLs, and it will execute all requests concurrently, returning the results in an array. Each response will contain the corresponding data for the respective request, making the process efficient and straightforward.
+
+- **Flexible API Requests**
+
+  - Easily make HTTP requests using a simple interface that supports both GET and POST methods.
+
+  **Example:**
+
+  ```javascript
+  import apiFlex from "api-flex";
+
+  const fetchPosts = async () => {
+    const posts = await apiFlex("https://jsonplaceholder.typicode.com/posts");
+    console.log("Posts:", posts);
+  };
+
+  fetchPosts();
+  ```
+
+- **Automatic Retries**
+
+  - Configurable retry logic to automatically attempt to re-fetch data in case of network failures or errors. Supports customizable retry counts and delays.
+
+  **Example:**
+
+  ```javascript
+  import apiFlex from "api-flex";
+
+  const fetchPostWithRetry = async () => {
+    try {
+      const data = await apiFlex(
+        "https://jsonplaceholder.typicode.com/posts/1",
+        {
+          retries: 3, // Number of retries
+          retryDelay: 1000, // Retry every 1 second
+        }
+      );
+      console.log("Fetched Post with Retry:", data);
+    } catch (error) {
+      console.error("Error fetching post after retries:", error.message);
+    }
+  };
+
+  fetchPostWithRetry();
+  ```
+
+- **Exponential Backoff**
+
+  - Built-in support for exponential backoff strategy during retries, reducing the likelihood of overwhelming the server during temporary issues.
+
+  **Example:**
+  (This feature is implemented automatically in the retry feature.)
+
+- **Caching Mechanism**
+
+  - Optional caching to store responses and improve performance on subsequent requests. Easily configurable to enable or disable caching.
+
+  **Example:**
+
+  ```javascript
+  import apiFlex from "api-flex";
+
+  const fetchCachedPost = async () => {
+    const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1", {
+      cache: true, // Enable caching
+    });
+    console.log("Fetched Cached Post:", data);
+  };
+
+  fetchCachedPost();
+  ```
+
+- **Timeout Handling**
+
+  - Customizable request timeout settings to prevent hanging requests and improve user experience.
+
+  **Example:**
+
+  ```javascript
+  import apiFlex from "api-flex";
+
+  const fetchPostWithTimeout = async () => {
+    try {
+      const data = await apiFlex(
+        "https://jsonplaceholder.typicode.com/posts/1",
+        {
+          timeout: 2000, // Timeout in 2 seconds
+        }
+      );
+      console.log("Fetched Post with Timeout:", data);
+    } catch (error) {
+      console.error("Error fetching post due to timeout:", error.message);
+    }
+  };
+
+  fetchPostWithTimeout();
+  ```
+
+- **Token Management**
+
+  - Automatic handling of authentication tokens, including token refreshing, ensuring secure API interactions.
+
+  **Example:**
+
+  ```javascript
+  import apiFlex from "api-flex";
+
+  const fetchProtectedResource = async () => {
+    try {
+      const data = await apiFlex("https://api.example.com/protected", {
+        token: "your-authentication-token", // Set token for authorization
+      });
+      console.log("Fetched Protected Resource:", data);
+    } catch (error) {
+      console.error("Error fetching protected resource:", error.message);
+    }
+  };
+
+  fetchProtectedResource();
+  ```
+
+- **Interceptor Support**
+
+  - Ability to add request and response interceptors, allowing developers to modify requests before sending or responses before returning.
+
+  **Example:**
+
+  ```javascript
+  import apiFlex from "api-flex";
+
+  const addRequestInterceptor = (config) => {
+    // Modify request config
+    console.log("Request Interceptor:", config);
+    return config;
+  };
+
+  const addResponseInterceptor = (response) => {
+    // Modify response data
+    console.log("Response Interceptor:", response);
+    return response;
+  };
+
+  apiFlex.addRequestInterceptor(addRequestInterceptor);
+  apiFlex.addResponseInterceptor(addResponseInterceptor);
+  ```
+
+- **Rate Limiting Handling**
+
+  - Automatically handles rate limiting responses from APIs (HTTP status 429). The library respects `Retry-After` headers and adjusts retry logic to avoid overwhelming the server.
+
+  **Example:**
+
+  ```javascript
+  import apiFlex from "api-flex";
+
+  const fetchWithRateLimitHandling = async () => {
+    try {
+      const data = await apiFlex("https://api.example.com/resource", {
+        retries: 5, // Number of retries
+        retryDelay: 1000, // Retry every 1 second
+      });
+      console.log("Fetched Data with Rate Limit Handling:", data);
+    } catch (error) {
+      console.error("Error fetching data:", error.message);
+    }
+  };
+
+  fetchWithRateLimitHandling();
+  ```
+
+- **Environment Detection**
+
+  - Compatible with both Node.js and browser environments, making it versatile for various applications.
+
+  **Example:**
+
+  ```javascript
+  import apiFlex from "api-flex";
+
+  const fetchData = async () => {
+    const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
+    console.log("Fetched Data (Node/Browser Compatible):", data);
+  };
+
+  fetchData();
+  ```
+
+- **Configurable Defaults**
+
+  - Easy-to-set default configurations (headers, timeouts, etc.) to streamline API calls.
+
+  **Example:**
+
+  ```javascript
+  import apiFlex from "api-flex";
+
+  const apiClient = new apiFlex({
+    headers: {
+      Authorization: "Bearer your-token",
+    },
+    timeout: 5000, // Default timeout
+  });
+
+  const fetchDefaultPost = async () => {
+    const data = await apiClient(
+      "https://jsonplaceholder.typicode.com/posts/1"
+    );
+    console.log("Fetched Post with Default Configs:", data);
+  };
+
+  fetchDefaultPost();
+  ```
+
+- **Lightweight and Fast**
+
+  - Designed to be lightweight and efficient, ensuring minimal performance impact on applications.
+
+---
 
 ## 📈 Conclusion
 

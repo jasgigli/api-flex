@@ -1,5 +1,4 @@
 import { handleRetry } from "./retry.js";
-import { getFromCache, saveToCache } from "./cache.js";
 import { isNode } from "../utils/environment.js";
 import fetch from "node-fetch"; // If running in Node.js
 
@@ -9,38 +8,41 @@ export const request = async ({
   headers,
   data,
   timeout,
-  cache = false,
+  retries = 3, // Add retries parameter here
+  retryDelay = 1000, // Add retryDelay parameter here
 }) => {
   const finalHeaders = { ...headers, "Content-Type": "application/json" };
   const options = { method, headers: finalHeaders };
 
   if (data) options.body = JSON.stringify(data);
 
-  // Handle caching
-  if (cache) {
-    const cachedData = getFromCache(url);
-    if (cachedData) return cachedData;
-  }
-
   // Use fetch based on environment (Node.js or Browser)
   const requestFn = isNode() ? fetch : window.fetch;
 
-  try {
-    const response = await handleTimeout(
-      handleRetry(() => requestFn(url, options)),
-      timeout
-    );
+  // Function to call for retry
+  const fetchFunction = async () => {
+    const response = await requestFn(url, options);
+
+    // Handle rate limiting
+    if (response.status === 429) {
+      const retryAfter = response.headers.get("Retry-After");
+      const delay = retryAfter ? parseInt(retryAfter) * 1000 : 1000; // Convert to milliseconds
+      throw new Error(`Rate limit exceeded. Retrying after ${delay}ms.`);
+    }
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    const jsonData = await response.json();
+    return response.json();
+  };
 
-    // Optionally save to cache
-    if (cache) saveToCache(url, jsonData);
-
-    return jsonData; // Return JSON directly
+  try {
+    // Pass the fetch function to handleRetry with user-defined retries and delay
+    return await handleTimeout(
+      handleRetry(fetchFunction, retries, retryDelay),
+      timeout
+    );
   } catch (error) {
     throw new Error(`Request failed: ${error.message}`);
   }

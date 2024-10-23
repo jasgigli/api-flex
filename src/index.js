@@ -11,17 +11,27 @@ class ApiFlex {
 
   async call(url, options = {}) {
     try {
-      this.token = await refreshTokenIfNeeded(this.token); // Assume the token may be updated
-      const data = await this.requestData(url, options);
-      return data;
+      this.token = await refreshTokenIfNeeded(this.token); // Refresh token if needed
+      return await this.requestData(url, options);
     } catch (error) {
       console.error("Error fetching data:", error.message);
-      return null; // Or throw error if preferred
+      return null; // Handle error gracefully
     }
   }
 
   async requestData(url, options) {
     return await request({ ...this.config, ...options, url });
+  }
+
+  async batch(urls, options = {}) {
+    const promises = urls.map((url) => this.call(url, options));
+    const results = await Promise.allSettled(promises);
+    return results.map((result) => ({
+      status: result.status,
+      ...(result.status === "fulfilled"
+        ? { data: result.value }
+        : { error: result.reason }),
+    }));
   }
 
   setToken(token) {
@@ -42,8 +52,15 @@ class ApiFlex {
   }
 }
 
-// Export the default function correctly
-export default async function apiFlex(url, options) {
-  const instance = new ApiFlex();
-  return await instance.call(url, options);
-}
+// Export the apiFlex function and add a batch method directly on it
+const apiFlexInstance = new ApiFlex();
+
+const apiFlex = async (url, options) => {
+  return await apiFlexInstance.call(url, options);
+};
+
+apiFlex.batch = async (urls, options = {}) => {
+  return await apiFlexInstance.batch(urls, options);
+};
+
+export default apiFlex;
