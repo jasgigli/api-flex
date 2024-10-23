@@ -8,6 +8,7 @@ api-flex/
 │   │   ├── retry.js            # Retry logic
 │   │   ├── interceptors.js     # Interceptor logic
 │   │   └── token.js            # Token management
+│   │   └── circuitBreaker.js           
 │   ├── config/
 │   │   └── default.js          # Default configuration
 │   └── utils/

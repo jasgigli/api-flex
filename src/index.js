@@ -1,18 +1,29 @@
 import { request } from "./core/request.js";
-import { setToken, refreshTokenIfNeeded } from "./core/token.js";
-import { addInterceptor, removeInterceptor } from "./core/interceptors.js";
-import { defaultConfig } from "./config/default.js";
+import { setToken, refreshTokenIfNeeded } from "./core/token.js"; // Import token management
+import { addInterceptor, removeInterceptor } from "./core/interceptors.js"; // Import interceptors
+import { defaultConfig } from "./config/default.js"; // Import the default configuration
+import CircuitBreaker from "./core/circuitBreaker.js"; // Import the circuit breaker
 
 class ApiFlex {
   constructor(config = {}) {
-    this.config = { ...defaultConfig, ...config };
+    this.config = { ...defaultConfig, ...config }; // Merge default config with user config
     this.token = this.config.token || null;
+
+    // Initialize circuit breaker with user-defined options or defaults
+    this.circuitBreaker = new CircuitBreaker({
+      failureThreshold: this.config.failureThreshold || 5,
+      resetTimeout: this.config.resetTimeout || 30000,
+    });
   }
 
   async call(url, options = {}) {
     try {
       this.token = await refreshTokenIfNeeded(this.token); // Refresh token if needed
-      return await this.requestData(url, options);
+
+      // Wrap the request in the circuit breaker logic
+      return await this.circuitBreaker.call(() =>
+        this.requestData(url, options)
+      );
     } catch (error) {
       console.error("Error fetching data:", error.message);
       return null; // Handle error gracefully
@@ -26,12 +37,11 @@ class ApiFlex {
   async batch(urls, options = {}) {
     const promises = urls.map((url) => this.call(url, options));
     const results = await Promise.allSettled(promises);
-    return results.map((result) => ({
-      status: result.status,
-      ...(result.status === "fulfilled"
+    return results.map((result) =>
+      result.status === "fulfilled"
         ? { data: result.value }
-        : { error: result.reason }),
-    }));
+        : { error: result.reason }
+    );
   }
 
   setToken(token) {

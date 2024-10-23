@@ -1,14 +1,21 @@
-const cacheStore = new Map();
+import { isNode } from "../utils/environment.js";
+
+let cache = {};
 
 export const getFromCache = (key) => {
-  const cached = cacheStore.get(key);
-  if (cached && Date.now() - cached.timestamp < cached.expiry) {
-    return cached.data;
+  if (isNode()) {
+    // Node.js specific caching (could be file-based or memory)
+    return cache[key];
+  } else {
+    // Browser-based caching using localStorage
+    return localStorage.getItem(key);
   }
-  cacheStore.delete(key);
-  return null;
 };
 
-export const saveToCache = (key, data, expiry = 60000) => {
-  cacheStore.set(key, { data, timestamp: Date.now(), expiry });
+export const saveToCache = (key, data) => {
+  if (isNode()) {
+    cache[key] = data;
+  } else {
+    localStorage.setItem(key, JSON.stringify(data));
+  }
 };

@@ -1,6 +1,13 @@
 import { handleRetry } from "./retry.js";
 import { isNode } from "../utils/environment.js";
-import fetch from "node-fetch"; // If running in Node.js
+
+// Conditionally import 'node-fetch' only if we're in Node.js
+let fetchFn;
+if (isNode()) {
+  fetchFn = (await import("node-fetch")).default; // Dynamic import for Node.js
+} else {
+  fetchFn = window.fetch.bind(window); // Use the native fetch in the browser
+}
 
 export const request = async ({
   url,
@@ -16,14 +23,11 @@ export const request = async ({
 
   if (data) options.body = JSON.stringify(data);
 
-  // Use fetch based on environment (Node.js or Browser)
-  const requestFn = isNode() ? fetch : window.fetch;
-
   // Function to call for retry
   const fetchFunction = async () => {
-    const response = await requestFn(url, options);
+    const response = await fetchFn(url, options);
 
-    // Handle rate limiting
+    // Handle rate limiting (429 status)
     if (response.status === 429) {
       const retryAfter = response.headers.get("Retry-After");
       const delay = retryAfter ? parseInt(retryAfter) * 1000 : 1000; // Convert to milliseconds
@@ -34,7 +38,7 @@ export const request = async ({
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    return response.json();
+    return await response.json();
   };
 
   try {
