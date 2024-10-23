@@ -1,3 +1,4 @@
+// src/core/interceptors.js
 const interceptors = { request: [], response: [] };
 
 export const addInterceptor = (type, interceptor) => {

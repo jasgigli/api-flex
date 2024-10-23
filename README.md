@@ -2,8 +2,6 @@
 
 [![npm](https://img.shields.io/npm/dm/api-flex.svg)](https://www.npmjs.com/package/api-flex)
 [![npm](https://img.shields.io/npm/v/api-flex.svg)](https://www.npmjs.com/package/api-flex)
-[![GitHub issues](https://img.shields.io/github/issues/your-username/api-flex.svg)](https://github.com/jasgigli/api-flex/issues)
-[![Build Status](https://img.shields.io/travis/jasgigli/api-flex.svg)](https://travis-ci.org/jasgigli/api-flex)
 [![License](https://img.shields.io/github/license/jasgigli/api-flex.svg)](https://github.com/jasgigli/api-flex/blob/main/LICENSE)
 
 **`api-flex`** is a modern, powerful, and flexible library for handling API requests. It combines the simplicity of `fetch` with the power of `axios`, while introducing advanced features such as automatic retries, token management, centralized error handling, and in-memory response caching.
@@ -29,151 +27,410 @@ npm install api-flex
 
 `api-flex` abstracts the complexity of API integrations, providing you with a robust and intuitive API to handle HTTP requests. No need to manually set up retries, caching, or token management—everything is handled out-of-the-box.
 
-## 💻 Usage
+Here are several simplified syntax examples for using the `apiFlex` library to make `GET` requests. Each example demonstrates a different approach while maintaining clarity and simplicity:
 
-### 🧩 Simplified API Example
+---
 
-Making a simple `GET` request is as easy as:
+# 💻 Usage
+
+### 💻 Simple Examples for `GET` Requests
+
+#### 🟢 Basic GET Request
 
 ```javascript
 import apiFlex from "api-flex";
 
-async function fetchUser() {
+const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
+console.log(data);
+```
+
+#### 🟢 Using `try-catch` with a Function
+
+```javascript
+import apiFlex from "api-flex";
+
+const fetchUser = async () => {
   try {
-    const data = await apiFlex.get("https://api.example.com/user/12345");
-    console.log("User data:", data);
+    const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
+    console.log(data);
   } catch (error) {
     console.error("Error fetching user:", error);
   }
-}
+};
 
 fetchUser();
 ```
 
-## 📚 Real-World Use Cases
-
-- **User Profiles**: Manage user data and profiles from your APIs with ease.
-- **E-commerce Applications**: Fetch and update product listings, inventories, or order details.
-- **Analytics Dashboards**: Pull in analytical data from multiple sources, with error handling and caching.
-- **Dynamic SPAs**: Load dynamic content in your Single Page Applications with smooth, cached API calls.
-
-## ⚙️ Advanced Examples
-
-### 🟢 **GET Request with Caching**
+#### 🟢 Using Promises
 
 ```javascript
 import apiFlex from "api-flex";
 
-// GET request with 5-minute cache enabled
-apiFlex
-  .get("https://jsonplaceholder.typicode.com/posts/1", {}, true)
-  .then((data) => console.log("Post data:", data))
-  .catch((err) => console.error("Error:", err));
+apiFlex("https://jsonplaceholder.typicode.com/posts/1")
+  .then((data) => console.log(data))
+  .catch((error) => console.error("Error fetching user:", error));
 ```
 
-### 🟢 **POST Request with Data**
+#### 🟢 Arrow Function Syntax
 
 ```javascript
 import apiFlex from "api-flex";
 
-// POST request to create a new resource
-apiFlex
-  .post("https://jsonplaceholder.typicode.com/posts", {
+const fetchUser = async () => {
+  const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
+  console.log(data);
+};
+
+fetchUser();
+```
+
+#### 🟢 Using an Immediately Invoked Function Expression (IIFE)
+
+```javascript
+import apiFlex from "api-flex";
+
+(async () => {
+  const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
+  console.log(data);
+})();
+```
+
+#### 🟢 Basic GET with Error Handling
+
+```javascript
+import apiFlex from "api-flex";
+
+(async () => {
+  const data = await apiFlex(
+    "https://jsonplaceholder.typicode.com/posts/1"
+  ).catch((err) => {
+    console.error("Error:", err);
+  });
+  console.log(data);
+})();
+```
+
+#### 🟢 GET Request with Optional Parameters
+
+```javascript
+import apiFlex from "api-flex";
+
+const fetchData = async (url) => {
+  return await apiFlex(url);
+};
+
+const data = await fetchData("https://jsonplaceholder.typicode.com/posts/1");
+console.log(data);
+```
+
+#### 🟢 GET Request with Custom Headers
+
+```javascript
+import apiFlex from "api-flex";
+
+const headers = { Authorization: "Bearer my-token" };
+const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1", {
+  headers,
+});
+console.log(data);
+```
+
+#### 🟢 Fetching Data from a Dynamic URL
+
+```javascript
+import apiFlex from "api-flex";
+
+const userId = 1;
+const url = `https://jsonplaceholder.typicode.com/posts/${userId}`;
+const data = await apiFlex(url);
+console.log(data);
+```
+
+#### 🟢 Logging the Result Immediately
+
+```javascript
+import apiFlex from "api-flex";
+
+(async () =>
+  console.log(await apiFlex("https://jsonplaceholder.typicode.com/posts/1")))();
+```
+
+---
+
+# 📚 More Modern Usage Examples
+
+## **GET Request**
+
+```javascript
+import apiFlex from "api-flex";
+
+const fetchPost = async () => {
+  try {
+    const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
+    console.log(data);
+  } catch (error) {
+    console.error("Error fetching post:", error);
+  }
+};
+
+fetchPost();
+```
+
+## **POST Request**
+
+```javascript
+import apiFlex from "api-flex";
+
+const createPost = async () => {
+  const postData = {
     title: "New Post",
     body: "This is a new post.",
     userId: 1,
-  })
-  .then((data) => console.log("Created Post:", data))
-  .catch((err) => console.error("Error:", err));
+  };
+
+  try {
+    const data = await apiFlex("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      body: JSON.stringify(postData),
+      headers: { "Content-Type": "application/json" },
+    });
+    console.log("Created Post:", data);
+  } catch (error) {
+    console.error("Error creating post:", error);
+  }
+};
+
+createPost();
 ```
 
-### 🟢 **PUT Request to Update Data**
+## **PUT Request**
 
 ```javascript
 import apiFlex from "api-flex";
 
-// PUT request to update a resource
-apiFlex
-  .put("https://jsonplaceholder.typicode.com/posts/1", {
+const updatePost = async () => {
+  const updatedData = {
     id: 1,
     title: "Updated Title",
     body: "Updated body content",
     userId: 1,
-  })
-  .then((data) => console.log("Updated Post:", data))
-  .catch((err) => console.error("Error:", err));
+  };
+
+  try {
+    const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1", {
+      method: "PUT",
+      body: JSON.stringify(updatedData),
+      headers: { "Content-Type": "application/json" },
+    });
+    console.log("Updated Post:", data);
+  } catch (error) {
+    console.error("Error updating post:", error);
+  }
+};
+
+updatePost();
 ```
 
-### 🟢 **DELETE Request**
+## **DELETE Request**
 
 ```javascript
 import apiFlex from "api-flex";
 
-// DELETE request to remove a resource
-apiFlex
-  .delete("https://jsonplaceholder.typicode.com/posts/1")
-  .then(() => console.log("Post deleted successfully."))
-  .catch((err) => console.error("Error:", err));
+const deletePost = async () => {
+  try {
+    await apiFlex("https://jsonplaceholder.typicode.com/posts/1", {
+      method: "DELETE",
+    });
+    console.log("Post deleted successfully.");
+  } catch (error) {
+    console.error("Error deleting post:", error);
+  }
+};
+
+deletePost();
 ```
 
-### 🟢 **GET Request with Custom Headers**
+## 🟢 **GET Request with Custom Headers**
 
 ```javascript
 import apiFlex from "api-flex";
 
-// GET request with custom headers (e.g., Authorization)
-apiFlex
-  .get(
-    "https://jsonplaceholder.typicode.com/posts",
-    { Authorization: "Bearer my-token" },
-    false
-  )
-  .then((data) => console.log("Data with custom headers:", data))
-  .catch((err) => console.error("Error:", err));
+const fetchWithHeaders = async () => {
+  try {
+    const data = await apiFlex("https://jsonplaceholder.typicode.com/posts", {
+      headers: { Authorization: "Bearer my-token" },
+    });
+    console.log("Data with custom headers:", data);
+  } catch (error) {
+    console.error("Error fetching data with headers:", error);
+  }
+};
+
+fetchWithHeaders();
 ```
 
-### 🟢 **Retry Logic Example**
+## 🟢 **Handling Errors Gracefully**
 
 ```javascript
 import apiFlex from "api-flex";
 
-// GET request with retries
-apiFlex
-  .get("https://api.somedomain.com/unreliable-endpoint", {}, true)
-  .then((data) => console.log("Data after retries:", data))
-  .catch((err) => console.error("Error after retries:", err));
+const fetchPostWithErrorHandling = async () => {
+  try {
+    const data = await apiFlex("https://api.somedomain.com/non-existent");
+    console.log("Fetched data:", data);
+  } catch (error) {
+    console.error("Error occurred:", error.message); // Custom error handling
+  }
+};
+
+fetchPostWithErrorHandling();
 ```
 
-### 🟢 **Handling Timeouts**
+---
+
+# 📦 Integration with Different Frameworks and Libraries
+
+# `React` <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React" width="30"/>
+
+Using `api-flex` in a React application is simple. You can call the API inside your functional components or within `useEffect` hooks.
+
+#### Example:
 
 ```javascript
+import React, { useEffect, useState } from "react";
 import apiFlex from "api-flex";
 
-// GET request with timeout of 2 seconds
-apiFlex
-  .get("https://jsonplaceholder.typicode.com/posts", { timeout: 2000 })
-  .then((data) => console.log("Data received:", data))
-  .catch((err) => console.error("Timeout Error:", err));
+const PostFetcher = () => {
+  const [post, setPost] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const data = await apiFlex(
+          "https://jsonplaceholder.typicode.com/posts/1"
+        );
+        setPost(data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchPost();
+  }, []);
+
+  return (
+    <div>
+      {error ? (
+        <p>Error: {error}</p>
+      ) : (
+        <div>
+          <h1>{post?.title}</h1>
+          <p>{post?.body}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PostFetcher;
 ```
 
-### 🟢 **Dynamic Token Management**
+# `Vue.js` <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" alt="Vue.js" width="30"/>
+
+To use `api-flex` in a Vue.js application, you can call the API inside the `mounted` lifecycle hook or within methods.
+
+#### Example:
 
 ```javascript
+<template>
+  <div>
+    <h1 v-if="post">{{ post.title }}</h1>
+    <p v-if="post">{{ post.body }}</p>
+    <p v-if="error">{{ error }}</p>
+  </div>
+</template>
+
+<script>
 import apiFlex from "api-flex";
 
-// Set token dynamically
-apiFlex.setToken("my-dynamic-token");
-
-// GET request with token
-apiFlex
-  .get("https://jsonplaceholder.typicode.com/posts")
-  .then((data) => console.log("Data with token:", data))
-  .catch((err) => console.error("Error:", err));
+export default {
+  data() {
+    return {
+      post: null,
+      error: null,
+    };
+  },
+  async mounted() {
+    try {
+      this.post = await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
+    } catch (err) {
+      this.error = err.message;
+    }
+  },
+};
+</script>
 ```
 
-## 🌐 Express Integration with `api-flex`
+# `Angular` <img src="https://angular.io/assets/images/logos/angular/angular.svg" alt="Angular" width="30"/>
 
-You can use `api-flex` in a Node.js/Express environment effortlessly:
+In Angular, you can create a service to encapsulate your API calls with `api-flex` and then inject that service into your components.
+
+#### Example Service:
+
+```typescript
+import { Injectable } from "@angular/core";
+import apiFlex from "api-flex";
+
+@Injectable({
+  providedIn: "root",
+})
+export class ApiService {
+  async fetchPost() {
+    try {
+      return await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+}
+```
+
+#### Example Component:
+
+```typescript
+import { Component, OnInit } from "@angular/core";
+import { ApiService } from "./api.service";
+
+@Component({
+  selector: "app-post",
+  template: `
+    <h1 *ngIf="post">{{ post.title }}</h1>
+    <p *ngIf="post">{{ post.body }}</p>
+    <p *ngIf="error">{{ error }}</p>
+  `,
+})
+export class PostComponent implements OnInit {
+  post: any;
+  error: string | null = null;
+
+  constructor(private apiService: ApiService) {}
+
+  async ngOnInit() {
+    try {
+      this.post = await this.apiService.fetchPost();
+    } catch (err) {
+      this.error = err.message;
+    }
+  }
+}
+```
+
+# `Express` <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" alt="Express" width="30"/> or `Node.js` <img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg" alt="Node.js" width="30"/>
+
+You can easily integrate `api-flex` in a Node.js/Express application for server-side API calls.
+
+#### Example:
 
 ```javascript
 import express from "express";
@@ -181,22 +438,53 @@ import apiFlex from "api-flex";
 
 const app = express();
 
-app.get("/product", async (req, res) => {
+app.get("/post", async (req, res) => {
   try {
-    const product = await apiFlex.get(
-      "https://jsonplaceholder.typicode.com/products/1"
-    );
-    res.json(product);
+    const post = await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
+    res.json(post);
   } catch (error) {
-    console.error("Error fetching product:", error.message);
-    res.status(500).send("Failed to fetch product.");
+    console.error("Error fetching post:", error.message);
+    res.status(500).send("Failed to fetch post.");
   }
 });
 
 app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+  console.log("Server running on http://localhost:3000");
 });
 ```
+
+# `Svelte`
+
+In a Svelte application, you can call `api-flex` directly within the script tag of your component.
+
+#### Example:
+
+```html
+<script>
+  import apiFlex from "api-flex";
+  import { onMount } from "svelte";
+
+  let post = null;
+  let error = null;
+
+  onMount(async () => {
+    try {
+      post = await apiFlex("https://jsonplaceholder.typicode.com/posts/1");
+    } catch (err) {
+      error = err.message;
+    }
+  });
+</script>
+
+{#if error}
+<p>Error: {error}</p>
+{:else if post}
+<h1>{post.title}</h1>
+<p>{post.body}</p>
+{/if}
+```
+
+---
 
 ## 📊 Comparison: `fetch`, `axios`, and `api-flex`
 
@@ -213,10 +501,23 @@ app.listen(3000, () => {
 
 ---
 
+Here’s a more modern and visually appealing version of the License and Contributing section, enhancing clarity and engagement:
+
+---
+
 ## 📜 License
 
-MIT License. See [LICENSE](https://github.com/jasgigli/api-flex/blob/main/LICENSE) for details.
+This project is licensed under the **MIT License**. For detailed information, please refer to the [LICENSE](https://github.com/jasgigli/api-flex/blob/main/LICENSE) file.
 
 ## 🤝 Contributing
 
-Feel free to submit issues or pull requests on [GitHub](https://github.com/jasgigli/api-flex). Contributions are welcome!
+We welcome contributions from the community! Here’s how you can help:
+
+- **Report Issues**: If you encounter any bugs or have suggestions, please [open an issue](https://github.com/jasgigli/api-flex/issues).
+- **Submit Pull Requests**: Contributions to the codebase are encouraged. Please follow the standard GitHub workflow for submitting your changes.
+
+**Contact Us**: If you have questions or want to collaborate, feel free to reach out via email: [overview.jjj@gmail.com](mailto:overview.jjj@gmail.com).
+
+## 🌐 Official Web App
+
+Explore **Api-Flex** in action at our official web app: [apiflex.vercel.app](https://apiflex.vercel.app/).

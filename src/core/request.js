@@ -1,22 +1,19 @@
+// src/core/request.js
 import { handleRetry } from "./retry.js";
 import { getFromCache, saveToCache } from "./cache.js";
-import { isNode } from "../utils/environment.js"; // Use this one only
-
-// No need to import environment again as it's already imported
-// import environment from "../utils/environment.js";
-// const { isNode } = environment; // Remove this line
+import { isNode } from "../utils/environment.js";
 
 import fetch from "node-fetch"; // If running in Node.js
 
 export const request = async ({
   url,
-  method,
+  method = "GET",
   headers,
   data,
   timeout,
   cache,
 }) => {
-  const finalHeaders = headers || {};
+  const finalHeaders = { ...headers };
   const options = { method, headers: finalHeaders };
 
   if (data) options.body = JSON.stringify(data);
@@ -30,8 +27,12 @@ export const request = async ({
 
   try {
     const response = await handleRetry(() => requestFn(url, options));
-    if (cache) saveToCache(url, response);
-    return response.json();
+    const jsonData = await response.json();
+
+    // Optionally save to cache
+    if (cache) saveToCache(url, jsonData);
+
+    return jsonData; // Return JSON directly
   } catch (error) {
     throw new Error(`Request failed: ${error.message}`);
   }

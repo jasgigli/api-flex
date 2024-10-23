@@ -19,8 +19,9 @@ api-flex/
 │   └── apiFlex.test.js    # Test cases
 │
 ├── examples/
-│   └── server.js          # Example server
+│   └── server.js          # Example od testing locally in this diectory
 │
 ├── package.json
 ├── README.md
 └── .eslintrc.js           # ESLint configuration
+└── CHANGELOG.md

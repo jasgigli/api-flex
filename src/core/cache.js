@@ -1,3 +1,4 @@
+// src/core/cache.js
 const cacheStore = new Map();
 
 export const getFromCache = (key) => {

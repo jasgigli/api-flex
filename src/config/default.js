@@ -1,3 +1,5 @@
+
+// src/config/deafault.js
 export const defaultConfig = {
   headers: {
     "Content-Type": "application/json",
