@@ -1,19 +1,33 @@
 // src/core/interceptors.js
-const interceptors = { request: [], response: [] };
+const requestInterceptors = [];
+const responseInterceptors = [];
 
 export const addInterceptor = (type, interceptor) => {
-  const id = interceptors[type].push(interceptor) - 1;
-  return id;
+  if (type === "request") {
+    requestInterceptors.push(interceptor);
+  } else if (type === "response") {
+    responseInterceptors.push(interceptor);
+  }
 };
 
 export const removeInterceptor = (type, id) => {
-  interceptors[type].splice(id, 1);
+  if (type === "request") {
+    requestInterceptors.splice(id, 1);
+  } else if (type === "response") {
+    responseInterceptors.splice(id, 1);
+  }
 };
 
-export const applyInterceptors = async (type, data) => {
-  let interceptedData = data;
-  for (const interceptor of interceptors[type]) {
-    interceptedData = await interceptor(interceptedData);
+export const applyRequestInterceptors = (config) => {
+  for (const interceptor of requestInterceptors) {
+    config = interceptor(config);
   }
-  return interceptedData;
+  return config;
+};
+
+export const applyResponseInterceptors = (response) => {
+  for (const interceptor of responseInterceptors) {
+    response = interceptor(response);
+  }
+  return response;
 };

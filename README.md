@@ -159,7 +159,7 @@ import apiFlex from "api-flex";
 
 # 📚 More Modern Usage Examples
 
-## **GET Request**
+### **GET Request**
 
 ```javascript
 import apiFlex from "api-flex";
@@ -176,7 +176,7 @@ const fetchPost = async () => {
 fetchPost();
 ```
 
-## **POST Request**
+### **POST Request**
 
 ```javascript
 import apiFlex from "api-flex";
@@ -203,7 +203,7 @@ const createPost = async () => {
 createPost();
 ```
 
-## **PUT Request**
+### **PUT Request**
 
 ```javascript
 import apiFlex from "api-flex";
@@ -231,7 +231,7 @@ const updatePost = async () => {
 updatePost();
 ```
 
-## **DELETE Request**
+### **DELETE Request**
 
 ```javascript
 import apiFlex from "api-flex";
@@ -250,7 +250,7 @@ const deletePost = async () => {
 deletePost();
 ```
 
-## 🟢 **GET Request with Custom Headers**
+### 🟢 **GET Request with Custom Headers**
 
 ```javascript
 import apiFlex from "api-flex";
@@ -269,7 +269,7 @@ const fetchWithHeaders = async () => {
 fetchWithHeaders();
 ```
 
-## 🟢 **Handling Errors Gracefully**
+### 🟢 **Handling Errors Gracefully**
 
 ```javascript
 import apiFlex from "api-flex";
@@ -286,6 +286,29 @@ const fetchPostWithErrorHandling = async () => {
 fetchPostWithErrorHandling();
 ```
 
+### Example Usage for Caching
+
+````javascript
+import apiFlex from "../src/index.js";
+
+const fetchUserWithCache = async () => {
+  try {
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: true, // Enable caching
+    };
+
+    const data = await apiFlex("https://jsonplaceholder.typicode.com/posts/1", options);
+    console.log("Cached User Data:", data);
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};
+
+fetchUserWithCache();```
 ---
 
 # 📦 Integration with Different Frameworks and Libraries
@@ -334,7 +357,7 @@ const PostFetcher = () => {
 };
 
 export default PostFetcher;
-```
+````
 
 # `Vue.js` <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" alt="Vue.js" width="30"/>
 

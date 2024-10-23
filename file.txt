@@ -1,27 +1,36 @@
 api-flex/
 │
 ├── src/
-│   ├── apiFlex.js         # Main entry point
+│   ├── index.js               # Main entry point
 │   ├── core/
-│   │   ├── request.js     # Core request logic (using fetch or axios)
-│   │   ├── cache.js       # Caching logic
-│   │   ├── retry.js       # Retry logic
-│   │   ├── interceptors.js# Interceptor logic
-│   │   └── token.js       # Token management
+│   │   ├── request.js          # Core request logic (using fetch or axios)
+│   │   ├── cache.js            # Caching logic
+│   │   ├── retry.js            # Retry logic
+│   │   ├── interceptors.js     # Interceptor logic
+│   │   └── token.js            # Token management
 │   ├── config/
-│   │   └── default.js     # Default configuration
+│   │   └── default.js          # Default configuration
 │   └── utils/
-│       ├── logger.js      # Error logging utility
-│       ├── helpers.js     # Utility functions (headers, timeouts, etc.)
-│       └── environment.js # Node/browser detection
+│       └── environment.js      # Node/browser detection
 │
 ├── test/
-│   └── apiFlex.test.js    # Test cases
+│   ├── apiFlex.test.js         # Test cases for the main API functionality
+│   ├── core/
+│   │   ├── request.test.js      # Test cases for request handling
+│   │   ├── cache.test.js        # Test cases for caching logic
+│   │   ├── retry.test.js        # Test cases for retry logic
+│   │   ├── interceptors.test.js  # Test cases for interceptor logic
+│   │   └── token.test.js        # Test cases for token management
+│   └── utils/
+│       └── environment.test.js  # Test cases for environment detection
 │
 ├── examples/
-│   └── server.js          # Example od testing locally in this diectory
+│   └── server.js               # Example of testing locally
 │
-├── package.json
-├── README.md
-└── .eslintrc.js           # ESLint configuration
-└── CHANGELOG.md
+├── .env                        # Environment variables (if needed)
+├── .babelrc                   # Babel configuration file
+├── package.json                # NPM package configuration
+├── README.md                   # Documentation
+├── .eslintrc.js                # ESLint configuration
+├── .gitignore                  # Git ignore file
+└── CHANGELOG.md                # Changelog for version updates

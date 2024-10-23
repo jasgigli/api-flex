@@ -1,4 +1,4 @@
-// src/apiFlex.js
+// src/index.js
 import { request } from "./core/request.js";
 import { setToken, refreshTokenIfNeeded } from "./core/token.js";
 import { addInterceptor, removeInterceptor } from "./core/interceptors.js";
@@ -12,16 +12,10 @@ class ApiFlex {
 
   async call(url, options = {}) {
     try {
-      // Refresh token if needed
       await refreshTokenIfNeeded(this.token);
-
-      // Make the request
       const data = await this.requestData(url, options);
-
-      // Return the data
       return data;
     } catch (error) {
-      // Log simple error message
       console.error("Error fetching data:", error.message);
       return null; // or throw error if preferred
     }
@@ -49,7 +43,7 @@ class ApiFlex {
   }
 }
 
-// Exporting a function to create an instance of ApiFlex
+// Ensure that you are exporting the default function correctly
 export default async function apiFlex(url, options) {
   const instance = new ApiFlex();
   return await instance.call(url, options);

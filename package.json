@@ -1,6 +1,6 @@
 {
   "name": "api-flex",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Powerful library for simplifying API calls with automatic retries and smart caching.",
   "main": "src/index.js",
   "module": "src/index.js",
@@ -10,15 +10,19 @@
     "lint": "eslint .",
     "prepublishOnly": "npm run lint",
     "prepare": "npm run build",
-    "build": "echo 'No build step required'",
-    "version": "npm version patch -m 'Upgrade to version %s'",
-    "test": "echo 'No test specified' && exit 0"
+    "build": "babel src --out-dir dist",
+    "version": "npm version patch -m 'Upgrade to version %s'"
   },
   "dependencies": {
     "axios": "^1.5.0",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "winston": "^3.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.25.9",
+    "@babel/core": "^7.25.9",
+    "@babel/plugin-transform-runtime": "^7.25.9",
+    "@babel/preset-env": "^7.25.9",
     "eslint": "^8.44.0"
   },
   "engines": {
