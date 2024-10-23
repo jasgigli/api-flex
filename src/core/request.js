@@ -1,4 +1,3 @@
-// src/core/request.js
 import { handleRetry } from "./retry.js";
 import { getFromCache, saveToCache } from "./cache.js";
 import { isNode } from "../utils/environment.js";

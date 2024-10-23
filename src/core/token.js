@@ -1,6 +1,4 @@
-// src/core/token.js
-
-import { isNode } from "../utils/environment.js"; // Import the isNode function
+import { isNode } from "../utils/environment.js";
 
 let token = null;
 

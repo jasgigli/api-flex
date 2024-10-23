@@ -1,4 +1,3 @@
-// src/index.js
 import { request } from "./core/request.js";
 import { setToken, refreshTokenIfNeeded } from "./core/token.js";
 import { addInterceptor, removeInterceptor } from "./core/interceptors.js";
@@ -12,12 +11,12 @@ class ApiFlex {
 
   async call(url, options = {}) {
     try {
-      await refreshTokenIfNeeded(this.token);
+      this.token = await refreshTokenIfNeeded(this.token); // Assume the token may be updated
       const data = await this.requestData(url, options);
       return data;
     } catch (error) {
       console.error("Error fetching data:", error.message);
-      return null; // or throw error if preferred
+      return null; // Or throw error if preferred
     }
   }
 
@@ -43,7 +42,7 @@ class ApiFlex {
   }
 }
 
-// Ensure that you are exporting the default function correctly
+// Export the default function correctly
 export default async function apiFlex(url, options) {
   const instance = new ApiFlex();
   return await instance.call(url, options);

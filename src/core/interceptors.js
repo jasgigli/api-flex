@@ -1,4 +1,3 @@
-// src/core/interceptors.js
 const requestInterceptors = [];
 const responseInterceptors = [];
 

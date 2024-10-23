@@ -1,5 +1,3 @@
-// src/utils/environment.js
-
 export const isNode = () => {
   return (
     typeof process !== "undefined" &&
