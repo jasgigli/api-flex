@@ -1,6 +1,6 @@
 {
   "name": "api-flex",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Powerful library for simplifying API calls with automatic retries and smart caching.",
   "main": "src/index.js",
   "module": "src/index.js",
