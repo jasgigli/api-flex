@@ -250,7 +250,33 @@ app.listen(3000, () => {
 
 ## 🛠️ Simple `api-flex` Usage in React
 
-### 1. Fetching Single Data
+### Loging the result in the Console
+
+```jsx
+import React from "react";
+import { useEffect } from "react";
+import apiFlex from "api-flex";
+
+const App = () => {
+  useEffect(() => {
+    apiFlex("https://jsonplaceholder.typicode.com/posts/1")
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => setError(err.message));
+  }, []);
+
+  return (
+    <div>
+      <h1>Welcome to ApiFlex Library</h1>
+    </div>
+  );
+};
+
+export default App;
+```
+
+### Fetching Single Data
 
 ```jsx
 import React, { useEffect, useState } from "react";
@@ -281,7 +307,7 @@ const FetchSingleData = () => {
 export default FetchSingleData;
 ```
 
-### 2. Batching Multiple API Requests
+### Batching Multiple API Requests
 
 ```jsx
 import React, { useEffect, useState } from "react";
@@ -464,7 +490,6 @@ fetchPosts();
 ## - **Automatic Retries**
 
 - Configurable retry logic to automatically attempt to re-fetch data in case of network failures or errors. Supports customizable retry counts and delays.
-
 
 ## - **Timeout Handling**
 
