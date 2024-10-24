@@ -246,7 +246,7 @@ app.listen(3000, () => {
 });
 ```
 
-# `React` <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React" width="30"/>
+# `React / Next.js` <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React" width="30"/>
 
 ## 🛠️ Simple `api-flex` Usage in React
 
